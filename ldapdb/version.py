@@ -7,11 +7,11 @@ import sys
 if sys.version_info < (3, 8):
     import pkg_resources
 
-    __version__ = pkg_resources.get_distribution('django-ldapdb').version
+    __version__ = pkg_resources.get_distribution('suap-django-ldapdb').version
 
 else:
     import importlib.metadata
 
-    __version__ = importlib.metadata.version('django-ldapdb')
+    __version__ = importlib.metadata.version('suap-django-ldapdb')
 
 VERSION = __version__

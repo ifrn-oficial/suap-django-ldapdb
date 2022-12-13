@@ -11,6 +11,10 @@ The ``django-ldapdb`` project is operated and maintained by:
 
 Contributors
 ------------
+The ``suap-django-ldapdb`` is fork from ``django-ldapdb`` project and is operated and maintained by:
+
+* Diego Saraiva <diegosaraiva@gmail.com> (https://github.com/jdiego), primary author
+* Hugo Tácito Azevedo de Sena <hugotacito@gmail.com> (https://github.com/hugotacito)
 
 The django-ldapdb project has received contributions from (in alphabetical order):
 

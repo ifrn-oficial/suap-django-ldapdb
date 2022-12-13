@@ -4,6 +4,7 @@
 
 import datetime
 import re
+import os
 
 from django.db.models import fields, lookups
 from django.utils import timezone
@@ -368,7 +369,7 @@ EPOCH = timezone.utc.localize(datetime.datetime.utcfromtimestamp(0))
 
 
 def datetime_from_timestamp(ts):
-    return timezone.utc.localize(datetime.datetime.utcfromtimestamp(ts))
+    return timezone.utc.localize(datetime.datetime.utcfromtimestamp(int(ts[:10])))
 
 
 def timestamp_from_datetime(dt):
@@ -395,3 +396,39 @@ TimestampField.register_lookup(ExactLookup)
 TimestampField.register_lookup(LteLookup)
 TimestampField.register_lookup(GteLookup)
 TimestampField.register_lookup(InLookup)
+
+class MultiValueField(LdapFieldMixin, fields.TextField):
+
+    multi_valued_field = True
+
+    def _cast(self, value, charset, strip_value = ' '):
+        if isinstance(value, str):
+            return [i.strip(strip_value).encode(charset) for i in value.split(os.linesep)]
+        return [v.encode(charset) for v in value]
+
+    def from_ldap(self, value, connection):
+        a = [x.decode(connection.charset) for x in value]
+        return os.linesep.join(a)
+
+    def get_db_prep_save(self, value, connection):
+        if value:
+            value = self._cast(value, connection.charset)
+            return value
+        return None
+
+    def from_db_value(self, value, expression, connection, context):
+        """
+        Convert from the database format.
+        This should be the inverse of self.get_prep_value()
+        """
+        # return self.to_python(value)
+        return os.linesep.join(value)
+
+    def to_python(self, value):
+        if value:
+            return self._cast(value, "utf8")
+        return []
+
+
+MultiValueField.register_lookup(ListContainsLookup)
+MultiValueField.register_lookup(ContainsLookup)
