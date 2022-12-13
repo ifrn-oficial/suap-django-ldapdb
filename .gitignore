@@ -9,6 +9,7 @@ docs/_build/
 .tox
 *.egg-info
 *.egg
+*.idea/
 .eggs/
 build/
 dist/
