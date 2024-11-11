@@ -397,11 +397,12 @@ TimestampField.register_lookup(LteLookup)
 TimestampField.register_lookup(GteLookup)
 TimestampField.register_lookup(InLookup)
 
+
 class MultiValueField(LdapFieldMixin, fields.TextField):
 
     multi_valued_field = True
 
-    def _cast(self, value, charset, strip_value = ' '):
+    def _cast(self, value, charset, strip_value=' '):
         if isinstance(value, str):
             return [i.strip(strip_value).encode(charset) for i in value.split(os.linesep)]
         return [v.encode(charset) for v in value]
