@@ -7,7 +7,7 @@ import re
 import os
 
 from django.db.models import fields, lookups
-from django.utils import timezone
+from datetime import timezone
 
 
 class LdapLookup(lookups.Lookup):
